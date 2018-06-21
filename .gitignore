@@ -1,0 +1,5 @@
+/versions/_original/
+
+!/versions/*
+/versions/*/*
+!/versions/*/src/
