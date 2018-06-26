@@ -28,16 +28,15 @@ public class DefaultStyle extends CrosshairStyle
 	 * Pretty much a copy of how the crosshair is rendered in GuiIngame.
 	 */
 	@Override
-	public void drawCrosshairStyle(int drawX, int drawY, int renderGap, RGBA renderColour)
+	public void drawCrosshairStyle(int drawX, int drawY, RGBA renderColour)
 	{
 		if (!this.shouldRenderCrosshair()) return;
 
-		GL11.glEnable(GL11.GL_BLEND);
         OpenGlHelper.glBlendFunc(775, 769, 1, 0);
         
 		mc.getTextureManager().bindTexture(Gui.ICONS);
         mc.ingameGUI.drawTexturedModalRect(drawX - 7, drawY - 7, 0, 0, 16, 16);
-
-        GL11.glDisable(GL11.GL_BLEND);
+        
+        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 	}
 }
