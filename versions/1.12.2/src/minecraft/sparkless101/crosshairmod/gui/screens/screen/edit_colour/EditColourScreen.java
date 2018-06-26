@@ -20,13 +20,13 @@ public class EditColourScreen extends Screen
 		
 		RGBA panelBackgroundColour = Theme.BLACK.setOpacity(200);
 		
-		this.mainPanel = new Panel(0, this.getHeaderHeight() + 1, 1000, 1000);
+		this.mainPanel = new Panel(this, 0, this.getHeaderHeight() + 1, 1000, 1000);
 		
 		this.mainPanel.setBackgroundColour(Theme.TRANSPARENT);
 		this.mainPanel.setBorderColour(Theme.TRANSPARENT);
 		this.mainPanel.hoverBorderColour = Theme.TRANSPARENT;
 		
-		this.editorPanel = new EditorPanel(propertyName, 0, 0, panelWidth, 0);
+		this.editorPanel = new EditorPanel(this, propertyName, 0, 0, panelWidth, 0);
 		this.editorPanel.setBackgroundColour(panelBackgroundColour);
 		this.editorPanel.hoverBackgroundColour = panelBackgroundColour;
 		

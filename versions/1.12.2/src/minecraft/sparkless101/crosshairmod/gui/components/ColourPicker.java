@@ -1,6 +1,7 @@
 package sparkless101.crosshairmod.gui.components;
 
 import net.minecraft.client.Minecraft;
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.screens.screen.edit_colour.EditColourScreen;
 import sparkless101.crosshairmod.gui.utils.RGBA;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
@@ -9,9 +10,9 @@ import sparkless101.crosshairmod.main.CustomCrosshairMod;
 
 public class ColourPicker extends Component
 {
-	public ColourPicker(String label, int x, int y)
+	public ColourPicker(Screen parentScreen, String label, int x, int y)
 	{
-		super(label, x, y, 25, 25);
+		super(parentScreen, label, x, y, 25, 25);
 		
 		this.backgroundColour = Theme.PRIMARY;
 		this.hoverBackgroundColour = Theme.SECONDARY;

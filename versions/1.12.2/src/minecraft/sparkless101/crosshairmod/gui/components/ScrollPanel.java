@@ -1,5 +1,6 @@
 package sparkless101.crosshairmod.gui.components;
 
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.RGBA;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
 import sparkless101.crosshairmod.gui.utils.Theme;
@@ -46,9 +47,9 @@ public class ScrollPanel extends Panel
 	 */
 	private int contentHeight;
 	
-	public ScrollPanel(int x, int y, int width, int height)
+	public ScrollPanel(Screen parentScreen, int x, int y, int width, int height)
 	{
-		super(x, y, width, height);
+		super(parentScreen, x, y, width, height);
 		
 		this.isMouseOverThumb = false;
 		

@@ -1,10 +1,6 @@
 package sparkless101.crosshairmod.gui.components;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import sparkless101.crosshairmod.gui.components.interfaces.IComponentMouseEvents;
-import sparkless101.crosshairmod.gui.utils.RGBA;
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
 import sparkless101.crosshairmod.gui.utils.Theme;
 
@@ -24,9 +20,9 @@ public class Panel extends Component
 	
 	protected int componentSpacing;
 	
-	public Panel(int x, int y, int width, int height)
+	public Panel(Screen parentScreen, int x, int y, int width, int height)
 	{
-		super("", x, y, width, height);
+		super(parentScreen, "", x, y, width, height);
 		
 		this.borderColour = Theme.DARK_GREY;
 		this.backgroundColour = Theme.TRANSPARENT;

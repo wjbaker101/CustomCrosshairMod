@@ -3,11 +3,11 @@ package sparkless101.crosshairmod.gui.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import sparkless101.crosshairmod.crosshair.properties.property.Property;
+import net.minecraft.client.gui.GuiScreen;
 import sparkless101.crosshairmod.gui.components.interfaces.ComponentStyle;
 import sparkless101.crosshairmod.gui.components.interfaces.IComponentMouseEvents;
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.Bounds;
-import sparkless101.crosshairmod.gui.utils.Theme;
 
 /**
  * The base component that can be displayed on a screen.
@@ -59,12 +59,17 @@ public abstract class Component extends ComponentStyle implements IComponentMous
 	protected String boundProperty;
 	
 	/**
+	 * Stores the screen which the component is within.
+	 */
+	private Screen parentScreen;
+	
+	/**
 	 * Stores the bounds of the component.<br>
 	 * The clickable region of the component.
 	 */
 	private Bounds bounds;
 	
-	public Component(String label, int x, int y, int width, int height)
+	public Component(Screen parentScreen, String label, int x, int y, int width, int height)
 	{
 		super();
 		
@@ -243,5 +248,10 @@ public abstract class Component extends ComponentStyle implements IComponentMous
 	public int getHeight()
 	{
 		return this.height;
+	}
+	
+	public Screen getParentScreen()
+	{
+		return this.parentScreen;
 	}
 }

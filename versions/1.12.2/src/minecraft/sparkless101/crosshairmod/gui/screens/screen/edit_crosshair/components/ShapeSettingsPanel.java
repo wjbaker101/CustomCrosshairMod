@@ -4,6 +4,7 @@ import sparkless101.crosshairmod.gui.components.ColourPicker;
 import sparkless101.crosshairmod.gui.components.Heading;
 import sparkless101.crosshairmod.gui.components.Panel;
 import sparkless101.crosshairmod.gui.components.Slider;
+import sparkless101.crosshairmod.gui.screens.Screen;
 
 public class ShapeSettingsPanel extends Panel
 {
@@ -23,13 +24,13 @@ public class ShapeSettingsPanel extends Panel
 	
 	private Slider crosshairStyleSlider;
 	
-	public ShapeSettingsPanel(int x, int y, int width, int height)
+	public ShapeSettingsPanel(Screen parentScreen, int x, int y, int width, int height)
 	{
-		super(x, y, width, height);
+		super(parentScreen, x, y, width, height);
 		
-		this.titleHeading = new Heading("Crosshair Shape Settings", 0, 0);
+		this.titleHeading = new Heading(parentScreen, "Crosshair Shape Settings", 0, 0);
 		
-		this.crosshairStyleSlider = new Slider("Crosshair Style", 0, 0, 75, 0, 2)
+		this.crosshairStyleSlider = new Slider(parentScreen, "Crosshair Style", 0, 0, 75, 0, 2)
 		{
 			@Override
 			protected String getDisplayValue(float value)
@@ -47,22 +48,22 @@ public class ShapeSettingsPanel extends Panel
 		};
 		this.crosshairStyleSlider.bindProperty("crosshair_style");
 		
-		this.crosshairColourPicker = new ColourPicker("Crosshair Colour", 0, 0);
+		this.crosshairColourPicker = new ColourPicker(parentScreen, "Crosshair Colour", 0, 0);
 		this.crosshairColourPicker.bindProperty("crosshair_colour");
 		
-		this.crosshairWidthSlider = new Slider("Width", 0, 0, 150, 0, 50);
+		this.crosshairWidthSlider = new Slider(parentScreen, "Width", 0, 0, 150, 0, 50);
 		this.crosshairWidthSlider.bindProperty("crosshair_width");
 		
-		this.crosshairHeightSlider = new Slider("Height", 0, 0, 150, 0, 50);
+		this.crosshairHeightSlider = new Slider(parentScreen, "Height", 0, 0, 150, 0, 50);
 		this.crosshairHeightSlider.bindProperty("crosshair_height");
 		
-		this.crosshairGapSlider = new Slider("Gap", 0, 0, 100, 0, 50);
+		this.crosshairGapSlider = new Slider(parentScreen, "Gap", 0, 0, 100, 0, 50);
 		this.crosshairGapSlider.bindProperty("crosshair_gap");
 		
-		this.crosshairThicknessSlider = new Slider("Thickness", 0, 0, 40, 1, 10);
+		this.crosshairThicknessSlider = new Slider(parentScreen, "Thickness", 0, 0, 40, 1, 10);
 		this.crosshairThicknessSlider.bindProperty("crosshair_thickness");
 		
-		this.crosshairRotationSlider = new Slider("Rotation", 0, 0, 180, 0, 360);
+		this.crosshairRotationSlider = new Slider(parentScreen, "Rotation", 0, 0, 180, 0, 360);
 		this.crosshairRotationSlider.bindProperty("crosshair_rotation");
 		
 		this.addComponent(this.titleHeading);

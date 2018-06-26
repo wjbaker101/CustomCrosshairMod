@@ -53,6 +53,11 @@ public abstract class Screen extends GuiScreen
 	private int dragStartY;
 	
 	/**
+	 * Screen to be displayed once the current screen has completed.
+	 */
+	private Screen parentScreen;
+	
+	/**
 	 * Initialise the screen.
 	 */
 	public Screen()
@@ -272,6 +277,13 @@ public abstract class Screen extends GuiScreen
 	 */
 	public void onKeyDown(int keyCode, char keyChar)
 	{
+		// Display the parent screen when the user presses ESC
+		if (keyCode == Keyboard.KEY_ESCAPE && this.parentScreen != null)
+		{
+			System.out.println(this.parentScreen);
+			this.mc.displayGuiScreen(this.parentScreen);
+		}
+		
 		//System.out.println("onKeyDown " + keyCode + " " + keyChar);
 	}
 	
@@ -280,6 +292,8 @@ public abstract class Screen extends GuiScreen
 		// Stores information about the key event
 		char keyChar = Keyboard.getEventCharacter();
 		int keyCode = Keyboard.getEventKey();
+		
+		super.handleKeyboardInput();
 		
 		// Checks whether the keyboard event is press or release
 		// True = Down
@@ -292,8 +306,6 @@ public abstract class Screen extends GuiScreen
 		{
 			this.onKeyUp(keyCode, keyChar);
 		}
-		
-		super.handleKeyboardInput();
 	}
 	
 	@Override
@@ -311,5 +323,15 @@ public abstract class Screen extends GuiScreen
 	public int getHeaderHeight()
 	{
 		return this.headerHeight;
+	}
+	
+	public void setParentScreen(Screen parentScreen)
+	{
+		this.parentScreen = parentScreen;
+	}
+	
+	public Screen getParentScreen()
+	{
+		return this.parentScreen;
 	}
 }

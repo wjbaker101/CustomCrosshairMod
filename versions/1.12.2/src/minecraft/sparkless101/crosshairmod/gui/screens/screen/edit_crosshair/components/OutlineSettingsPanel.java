@@ -4,6 +4,7 @@ import sparkless101.crosshairmod.gui.components.CheckBox;
 import sparkless101.crosshairmod.gui.components.ColourPicker;
 import sparkless101.crosshairmod.gui.components.Heading;
 import sparkless101.crosshairmod.gui.components.Panel;
+import sparkless101.crosshairmod.gui.screens.Screen;
 
 public class OutlineSettingsPanel extends Panel
 {
@@ -13,16 +14,16 @@ public class OutlineSettingsPanel extends Panel
 	
 	private ColourPicker outlineColourPicker;
 	
-	public OutlineSettingsPanel(int x, int y, int width, int height)
+	public OutlineSettingsPanel(Screen parentScreen, int x, int y, int width, int height)
 	{
-		super(x, y, width, height);
+		super(parentScreen, x, y, width, height);
 		
-		this.titleHeading = new Heading("Outline Settings", 0, 0);
+		this.titleHeading = new Heading(parentScreen, "Outline Settings", 0, 0);
 		
-		this.isOutlineEnabledCheckBox = new CheckBox("Enable Outline", 0, 0);
+		this.isOutlineEnabledCheckBox = new CheckBox(parentScreen, "Enable Outline", 0, 0);
 		this.isOutlineEnabledCheckBox.bindProperty("outline_enabled");
 		
-		this.outlineColourPicker = new ColourPicker("Outline Colour", 0, 0);
+		this.outlineColourPicker = new ColourPicker(parentScreen, "Outline Colour", 0, 0);
 		this.outlineColourPicker.bindProperty("outline_colour");
 		
 		this.addComponent(this.titleHeading);

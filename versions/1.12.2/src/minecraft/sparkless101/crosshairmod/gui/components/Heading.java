@@ -2,9 +2,8 @@ package sparkless101.crosshairmod.gui.components;
 
 import org.lwjgl.opengl.GL11;
 
-import sparkless101.crosshairmod.gui.utils.RGBA;
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
-import sparkless101.crosshairmod.gui.utils.Theme;
 
 public class Heading extends Component
 {
@@ -18,9 +17,9 @@ public class Heading extends Component
 	 */
 	private float reverseTextScaling;
 	
-	public Heading(String label, int x, int y)
+	public Heading(Screen parentScreen, String label, int x, int y)
 	{
-		super(label, x, y, RenderManager.getTextWidth(label) + 2, 18);
+		super(parentScreen, label, x, y, RenderManager.getTextWidth(label) + 2, 18);
 		
 		this.setTextScaling(1.5F);
 		

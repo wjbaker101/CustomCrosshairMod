@@ -1,14 +1,13 @@
 package sparkless101.crosshairmod.gui.components;
 
-import sparkless101.crosshairmod.gui.utils.RGBA;
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
-import sparkless101.crosshairmod.gui.utils.Theme;
 
 public class Button extends Component
 {
-	public Button(String label, int x, int y, int width, int height)
+	public Button(Screen parentScreen, String label, int x, int y, int width, int height)
 	{
-		super(label, x, y, width, height);
+		super(parentScreen, label, x, y, width, height);
 	}
 	
 	public void drawComponent()

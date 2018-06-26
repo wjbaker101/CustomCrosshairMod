@@ -1,13 +1,14 @@
 package sparkless101.crosshairmod.gui.components;
 
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
 import sparkless101.crosshairmod.gui.utils.Theme;
 
 public class ButtonCircle extends Button
 {
-	public ButtonCircle(String label, int x, int y, int width, int height)
+	public ButtonCircle(Screen parentScreen, String label, int x, int y, int width, int height)
 	{
-		super(label, x, y, width, height);
+		super(parentScreen, label, x, y, width, height);
 	}
 	
 	public void drawComponent()

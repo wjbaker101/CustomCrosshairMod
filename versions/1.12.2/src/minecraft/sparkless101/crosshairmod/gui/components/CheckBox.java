@@ -1,8 +1,7 @@
 package sparkless101.crosshairmod.gui.components;
 
-import java.awt.Cursor;
-
 import sparkless101.crosshairmod.crosshair.properties.property.BooleanProperty;
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.RGBA;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
 import sparkless101.crosshairmod.gui.utils.Theme;
@@ -14,9 +13,9 @@ public class CheckBox extends Component
 	
 	private boolean isChecked;
 	
-	public CheckBox(String label, int x, int y)
+	public CheckBox(Screen parentScreen, String label, int x, int y)
 	{
-		super(label, x, y, 11, 11);
+		super(parentScreen, label, x, y, 11, 11);
 		
 		this.backgroundColour = Theme.PRIMARY;
 		

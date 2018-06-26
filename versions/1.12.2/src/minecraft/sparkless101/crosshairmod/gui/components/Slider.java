@@ -3,6 +3,7 @@ package sparkless101.crosshairmod.gui.components;
 import sparkless101.crosshairmod.crosshair.properties.property.FloatProperty;
 import sparkless101.crosshairmod.crosshair.properties.property.IntegerProperty;
 import sparkless101.crosshairmod.crosshair.properties.property.Property;
+import sparkless101.crosshairmod.gui.screens.Screen;
 import sparkless101.crosshairmod.gui.utils.RGBA;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
 import sparkless101.crosshairmod.gui.utils.Theme;
@@ -89,9 +90,9 @@ public class Slider extends Component
 		INTEGER;
 	}
 	
-	public Slider(String label, int x, int y, int width, int minValue, int maxValue)
+	public Slider(Screen parentScreen, String label, int x, int y, int width, int minValue, int maxValue)
 	{
-		super(label, x, y, width, 13 + 3 + 10);
+		super(parentScreen, label, x, y, width, 13 + 3 + 10);
 		
 		this.thumbPosition = 0;
 		

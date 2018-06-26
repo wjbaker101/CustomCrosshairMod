@@ -36,32 +36,32 @@ public class EditCrosshairScreen extends Screen
 		
 		RGBA panelBackgroundColour = Theme.BLACK.setOpacity(200);
 		
-		this.mainPanel = new ScrollPanel(0, this.getHeaderHeight() + 1, 1000, 1000);
+		this.mainPanel = new ScrollPanel(this, 0, this.getHeaderHeight() + 1, 1000, 1000);
 		
 		this.mainPanel.setBackgroundColour(Theme.TRANSPARENT);
 		this.mainPanel.setBorderColour(Theme.TRANSPARENT);
 		
-		this.shapeSettingsPanel = new ShapeSettingsPanel(0, 0, panelWidth, 0);
+		this.shapeSettingsPanel = new ShapeSettingsPanel(this, 0, 0, panelWidth, 0);
 		this.shapeSettingsPanel.setBackgroundColour(panelBackgroundColour);
 		this.shapeSettingsPanel.hoverBackgroundColour = panelBackgroundColour;
 		
-		this.visibilitySettingsPanel = new VisibilitySettingsPanel(0, 0, panelWidth, 0);
+		this.visibilitySettingsPanel = new VisibilitySettingsPanel(this, 0, 0, panelWidth, 0);
 		this.visibilitySettingsPanel.setBackgroundColour(panelBackgroundColour);
 		this.visibilitySettingsPanel.hoverBackgroundColour = panelBackgroundColour;
 		
-		this.outlineSettingsPanel = new OutlineSettingsPanel(0, 0, panelWidth, 0);
+		this.outlineSettingsPanel = new OutlineSettingsPanel(this, 0, 0, panelWidth, 0);
 		this.outlineSettingsPanel.setBackgroundColour(panelBackgroundColour);
 		this.outlineSettingsPanel.hoverBackgroundColour = panelBackgroundColour;
 		
-		this.dotSettingsPanel = new DotSettingsPanel(0, 0, panelWidth, 0);
+		this.dotSettingsPanel = new DotSettingsPanel(this, 0, 0, panelWidth, 0);
 		this.dotSettingsPanel.setBackgroundColour(panelBackgroundColour);
 		this.dotSettingsPanel.hoverBackgroundColour = panelBackgroundColour;
 		
-		this.dynamicCrosshairPanel = new DynamicCrosshairPanel(0, 0, panelWidth, 0);
+		this.dynamicCrosshairPanel = new DynamicCrosshairPanel(this, 0, 0, panelWidth, 0);
 		this.dynamicCrosshairPanel.setBackgroundColour(panelBackgroundColour);
 		this.dynamicCrosshairPanel.hoverBackgroundColour = panelBackgroundColour;
 		
-		this.rainbowSettingsPanel = new RainbowSettingsPanel(0, 0, panelWidth, 0);
+		this.rainbowSettingsPanel = new RainbowSettingsPanel(this, 0, 0, panelWidth, 0);
 		this.rainbowSettingsPanel.setBackgroundColour(panelBackgroundColour);
 		this.rainbowSettingsPanel.hoverBackgroundColour = panelBackgroundColour;
 
