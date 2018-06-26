@@ -1,4 +1,4 @@
-package sparkless101.crosshairmod.crosshair.properties.config;
+package sparkless101.crosshairmod.crosshair.config;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -74,13 +74,13 @@ public class Config
 				
 				// Gets the current property object
 				// Associated from the alias found on the current line
-				Property property = CustomCrosshairMod.INSTANCE.getCrosshair().properties.get(alias);
+				Property property = CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().get(alias);
 				
 				// Checks whether there is a property with the current alias
 				if (property != null)
 				{
 					// Updates the property value with the new value from the config file
-					CustomCrosshairMod.INSTANCE.getCrosshair().properties.set(alias, property.setValue(value));
+					CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().set(alias, property.setValue(value));
 				}
 			}
 			
@@ -112,7 +112,7 @@ public class Config
 			
 			// Writes lines for each of the properties
 			// Formats the key and value of the properties separated by a ":"
-			for (Entry entry: CustomCrosshairMod.INSTANCE.getCrosshair().properties.getList())
+			for (Entry entry: CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().getList())
 			{
 				bufferedWriter.write(String.format("%s:%s", entry.getKey(), entry.getValue()));
 				bufferedWriter.newLine();
