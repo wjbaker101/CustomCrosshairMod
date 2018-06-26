@@ -1,5 +1,6 @@
 package sparkless101.crosshairmod.gui.screens.screen.edit_crosshair.components;
 
+import sparkless101.crosshairmod.gui.components.ColourPicker;
 import sparkless101.crosshairmod.gui.components.Heading;
 import sparkless101.crosshairmod.gui.components.Panel;
 import sparkless101.crosshairmod.gui.components.Slider;
@@ -7,6 +8,8 @@ import sparkless101.crosshairmod.gui.components.Slider;
 public class ShapeSettingsPanel extends Panel
 {
 	private Heading titleHeading;
+	
+	private ColourPicker crosshairColourPicker;
 	
 	private Slider crosshairWidthSlider;
 	
@@ -18,16 +21,39 @@ public class ShapeSettingsPanel extends Panel
 	
 	private Slider crosshairRotationSlider;
 	
+	private Slider crosshairStyleSlider;
+	
 	public ShapeSettingsPanel(int x, int y, int width, int height)
 	{
 		super(x, y, width, height);
 		
 		this.titleHeading = new Heading("Crosshair Shape Settings", 0, 0);
 		
-		this.crosshairWidthSlider = new Slider("Width", 0, 0, 100, 0, 50);
+		this.crosshairStyleSlider = new Slider("Crosshair Style", 0, 0, 75, 0, 2)
+		{
+			@Override
+			protected String getDisplayValue(float value)
+			{
+				int intValue = this.valueToInt();
+				
+				if (intValue == 0) return "Default";
+				
+				if (intValue == 1) return "Cross";
+				
+				if (intValue == 2) return "Circle";
+				
+				return "Invalid (Defaults to Default Crosshair)";
+			}
+		};
+		this.crosshairStyleSlider.bindProperty("crosshair_style");
+		
+		this.crosshairColourPicker = new ColourPicker("Crosshair Colour", 0, 0);
+		this.crosshairColourPicker.bindProperty("crosshair_colour");
+		
+		this.crosshairWidthSlider = new Slider("Width", 0, 0, 150, 0, 50);
 		this.crosshairWidthSlider.bindProperty("crosshair_width");
 		
-		this.crosshairHeightSlider = new Slider("Height", 0, 0, 100, 0, 50);
+		this.crosshairHeightSlider = new Slider("Height", 0, 0, 150, 0, 50);
 		this.crosshairHeightSlider.bindProperty("crosshair_height");
 		
 		this.crosshairGapSlider = new Slider("Gap", 0, 0, 100, 0, 50);
@@ -40,6 +66,8 @@ public class ShapeSettingsPanel extends Panel
 		this.crosshairRotationSlider.bindProperty("crosshair_rotation");
 		
 		this.addComponent(this.titleHeading);
+		this.addComponent(this.crosshairStyleSlider);
+		this.addComponent(this.crosshairColourPicker);
 		this.addComponent(this.crosshairWidthSlider);
 		this.addComponent(this.crosshairHeightSlider);
 		this.addComponent(this.crosshairGapSlider);

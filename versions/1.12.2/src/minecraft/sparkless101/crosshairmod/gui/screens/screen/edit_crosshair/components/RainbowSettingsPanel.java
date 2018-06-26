@@ -22,7 +22,18 @@ public class RainbowSettingsPanel extends Panel
 		this.isRainbowEnabledCheckBox = new CheckBox("Enable Rainbow", 0, 0);
 		this.isRainbowEnabledCheckBox.bindProperty("rainbow_enabled");
 		
-		this.rainbowSpeedSlider = new Slider("Rainbow Speed", 0, 0, 100, 1, 1000);
+		this.rainbowSpeedSlider = new Slider("Rainbow Speed", 0, 0, 100, 1, 1000)
+		{
+			@Override
+			protected String getDisplayValue(float value)
+			{
+				if (value < 333) return "Slow";
+				
+				if (value < 666) return "Medium";
+				
+				return "Fast";
+			}
+		};
 		this.rainbowSpeedSlider.bindProperty("rainbow_speed");
 		
 		this.addComponent(this.titleHeading);
