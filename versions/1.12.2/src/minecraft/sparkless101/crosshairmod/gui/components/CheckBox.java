@@ -61,7 +61,7 @@ public class CheckBox extends Component
 		// Updates the value of the bound property
 		if (this.boundProperty != null)
 		{
-			CustomCrosshairMod.INSTANCE.getCrosshair().properties.set(this.boundProperty, new BooleanProperty(this.isChecked));
+			CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().set(this.boundProperty, new BooleanProperty(this.isChecked));
 		}
 	}
 	
@@ -70,7 +70,7 @@ public class CheckBox extends Component
 	{
 		super.bindProperty(property);
 		
-		this.setChecked((Boolean)CustomCrosshairMod.INSTANCE.getCrosshair().properties.get(this.boundProperty).getValue());
+		this.setChecked((Boolean)CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().get(this.boundProperty).getValue());
 	}
 	
 	public boolean isChecked()
