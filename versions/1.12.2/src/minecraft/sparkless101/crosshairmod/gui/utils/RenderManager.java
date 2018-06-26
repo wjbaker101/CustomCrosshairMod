@@ -241,6 +241,45 @@ public class RenderManager
         GL11.glEnd();
         postRender();
     }
+    
+    /**
+     * Draws a torus (doughnut) shape.
+     * 
+     * @param x Centred X position of the torus.
+     * @param y Centred Y position of the torus.
+     * @param innerRadius Radius of the hole inside the torus.
+     * @param outerRadius Radius of the entire torus.
+     * @param colour Colour of the torus.
+     * @param smooth Whether the edges of the torus should be smooth.
+     */
+    public static void drawTorus(int x, int y, int innerRadius, int outerRadius, RGBA colour, boolean smooth)
+    {
+    	preRender();
+
+    	glToggle(GL11.GL_LINE_SMOOTH, smooth);
+
+        GL11.glLineWidth(1.0F);
+        
+        GL11.glColor4f(colour.getRed() / 255.0F, colour.getGreen() / 255.0F, colour.getBlue() / 255.0F, colour.getOpacity() / 255.0F);
+        
+        GL11.glBegin(GL11.GL_LINE_STRIP);
+        
+        float ratio = (float)Math.PI / 180.F;
+
+        for (int i = 0; i < 360; ++i)
+        {
+            // i - 90 translates the angle so it will be relative to the top most point in the circle
+            // Rather than being relative to the right
+            float radians = (i - 90) * ratio;
+            
+            GL11.glVertex2f(x + (float)Math.cos(radians) * innerRadius, y + (float)Math.sin(radians) * innerRadius);
+            GL11.glVertex2f(x + (float)Math.cos(radians) * outerRadius, y + (float)Math.sin(radians) * outerRadius);
+        }
+
+        GL11.glEnd();
+        
+        postRender();
+    }
 
     /**
      * Draws text.
