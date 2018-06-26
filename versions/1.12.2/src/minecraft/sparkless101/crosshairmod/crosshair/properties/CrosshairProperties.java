@@ -12,14 +12,14 @@ import sparkless101.crosshairmod.crosshair.properties.property.StringProperty;
 import sparkless101.crosshairmod.gui.utils.RGBA;
 import sparkless101.crosshairmod.gui.utils.Theme;
 
-public class Properties
+public class CrosshairProperties
 {
 	/**
 	 * Stores the properties of the crosshair.
 	 */
 	private final HashMap<String, Property> properties;
 	
-	public Properties()
+	public CrosshairProperties()
 	{
 		this.properties = new HashMap<String, Property>();
 		
@@ -36,10 +36,10 @@ public class Properties
 
 		this.properties.put("crosshair_style", new IntegerProperty(0));
 		this.properties.put("crosshair_colour", new RGBAProperty(Theme.WHITE));
-		this.properties.put("crosshair_width", new IntegerProperty(5));
-		this.properties.put("crosshair_height", new IntegerProperty(5));
+		this.properties.put("crosshair_width", new IntegerProperty(4));
+		this.properties.put("crosshair_height", new IntegerProperty(4));
 		this.properties.put("crosshair_gap", new IntegerProperty(3));
-		this.properties.put("crosshair_thickness", new IntegerProperty(2));
+		this.properties.put("crosshair_thickness", new IntegerProperty(1));
 		this.properties.put("crosshair_rotation", new IntegerProperty(0));
 		
 		this.properties.put("visible_default", new BooleanProperty(true));
