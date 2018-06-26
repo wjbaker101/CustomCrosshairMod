@@ -9,7 +9,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiScreen;
-import sparkless101.crosshairmod.crosshair.properties.config.Config;
+import sparkless101.crosshairmod.crosshair.config.Config;
 import sparkless101.crosshairmod.gui.components.Component;
 import sparkless101.crosshairmod.gui.utils.RenderManager;
 import sparkless101.crosshairmod.gui.utils.Theme;
@@ -185,12 +185,12 @@ public abstract class Screen extends GuiScreen
 	
 	protected void onMouseScrollUp()
 	{
-		System.out.println("onMouseScrollUp");
+		//System.out.println("onMouseScrollUp");
 	}
 	
 	protected void onMouseScrollDown()
 	{
-		System.out.println("onMouseScrollDown");
+		//System.out.println("onMouseScrollDown");
 	}
 	
 	/**
