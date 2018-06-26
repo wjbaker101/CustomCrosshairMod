@@ -6,10 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import sparkless101.crosshairmod.crosshair.properties.Properties;
+import sparkless101.crosshairmod.crosshair.properties.CrosshairProperties;
 import sparkless101.crosshairmod.crosshair.properties.property.IntegerProperty;
 import sparkless101.crosshairmod.crosshair.render.CrosshairRenderer;
 import sparkless101.crosshairmod.crosshair.style.CrosshairStyle;
+import sparkless101.crosshairmod.crosshair.style.styles.CircleStyle;
 import sparkless101.crosshairmod.crosshair.style.styles.CrossStyle;
 import sparkless101.crosshairmod.crosshair.style.styles.DefaultStyle;
 import sparkless101.crosshairmod.gui.utils.Theme;
@@ -27,13 +28,16 @@ public class Crosshair
 	 */
 	private Minecraft mc;
 	
-	private CrosshairRenderer crosshairRenderer;
+	/**
+	 * Defines functionality for rendering the crosshair.
+	 */
+	private CrosshairRenderer renderer;
 	
 	/**
 	 * Stores the properties of the crosshair.<br>
 	 * e.g. Colour, size, style, etc...
 	 */
-	public final Properties properties;
+	private CrosshairProperties properties;
 	
 	/**
 	 * Stores the items which should be checked for when rendering its cooldown.
@@ -47,7 +51,7 @@ public class Crosshair
 	/**
 	 * Stores the styles the crosshair can be displayed as.
 	 */
-	public final HashMap<Integer, CrosshairStyle> styles;
+	private HashMap<Integer, CrosshairStyle> styles;
 	
 	/**
 	 * Initialise the crosshair, by setting up default crosshair properties.
@@ -58,22 +62,23 @@ public class Crosshair
 	{
 		this.mc = mc;
 		
-		this.properties = new Properties();
+		this.properties = new CrosshairProperties();
 		
-		this.styles = new HashMap<Integer, CrosshairStyle>();
+		this.createStyles();
 		
-		this.initCrosshairStyles();
-		
-		this.crosshairRenderer = new CrosshairRenderer(this.mc, this);
+		this.renderer = new CrosshairRenderer(this.mc, this);
 	}
 	
 	/**
 	 * Add the crosshair styles to the HashMap.
 	 */
-	private void initCrosshairStyles()
+	private void createStyles()
 	{
-		this.styles.put(0, new CrossStyle(this.mc, this));
-		this.styles.put(1, new DefaultStyle(this.mc, this));
+		this.styles = new HashMap<Integer, CrosshairStyle>();
+
+		this.styles.put(0, new DefaultStyle(this.mc, this));
+		this.styles.put(1, new CrossStyle(this.mc, this));
+		this.styles.put(2, new CircleStyle(this.mc, this));
 	}
 	
 	/**
@@ -84,6 +89,16 @@ public class Crosshair
 	 */
 	public void drawCrosshair(int drawX, int drawY)
 	{
-		this.crosshairRenderer.render(drawX, drawY);
+		this.renderer.render(drawX, drawY);
+	}
+	
+	public CrosshairProperties getProperties()
+	{
+		return this.properties;
+	}
+	
+	public HashMap<Integer, CrosshairStyle> getStyles()
+	{
+		return this.styles;
 	}
 }
