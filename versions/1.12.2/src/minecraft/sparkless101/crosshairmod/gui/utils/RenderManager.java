@@ -25,6 +25,7 @@ public class RenderManager
     {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         //GL11.glDisable(GL11.GL_BLEND);
+        
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
@@ -60,12 +61,12 @@ public class RenderManager
     {
         // Creates an array containing the sides of the rectangle
         drawLines(new float[]
-                  {
-                      x1, y1, x2, y1,
-                      x2, y1, x2, y2,
-                      x1, y2, x2, y2,
-                      x1, y1, x1, y2
-                  }, thickness, colour, smooth);
+        {
+	        x1, y1, x2, y1,
+	        x2, y1, x2, y2,
+	        x1, y2, x2, y2,
+	        x1, y1, x1, y2
+        }, thickness, colour, smooth);
     }
 
     /**
@@ -89,7 +90,7 @@ public class RenderManager
     /**
      * Draws a sequence of connecting lines.
      *
-     * @param points Array of points to draw. Contains points for drawing lines such as: [x1, y1, x2, y2, x2, y2, x3, y3]; which will draw a line from (x1, y1) to (x2, y2) to (x3, y3).
+     * @param points Array of points to draw.
      * @param thickness Thickness of the line.
      * @param colour Colour of the line.
      * @param smooth Whether the line should be smoothed.
@@ -97,19 +98,13 @@ public class RenderManager
     public static void drawLines(float[] points, float thickness, RGBA colour, boolean smooth)
     {
         preRender();
-
-        if (smooth)
-        {
-            GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        }
-        else
-        {
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        }
+        
+    	glToggle(GL11.GL_LINE_SMOOTH, smooth);
 
         GL11.glLineWidth(thickness);
-        // Converts the RGBA value (0-255) to a value relative to 1.0
+        
         GL11.glColor4f(colour.getRed() / 255.0F, colour.getGreen() / 255.0F, colour.getBlue() / 255.0F, colour.getOpacity() / 255.0F);
+        
         GL11.glBegin(GL11.GL_LINES);
 
         for (int i = 0; i < points.length; i += 2)
@@ -119,6 +114,7 @@ public class RenderManager
         }
 
         GL11.glEnd();
+        
         postRender();
     }
 
@@ -136,36 +132,29 @@ public class RenderManager
     {
         // Creates an array containing the sides of the rectangle
         drawFilledShape(new float[]
-                        {
-                            x1, y1,
-                            x1, y2,
-                            x2, y2,
-                            x2, y1
-                        }, colour, smooth);
+        {
+	        x1, y1,
+	        x1, y2,
+	        x2, y2,
+	        x2, y1
+        }, colour, smooth);
     }
 
     /**
      * Draws a filled shape.
      *
-     * @param points Array of vertices to draw. Contains vertices for  such as: [x1, y1, x2, y2, x2, y2, x3, y3]; which will draw a line from (x1, y1) to (x2, y2) to (x3, y3).
+     * @param points Array of vertices to draw.
      * @param colour Colour of the shape.
      * @param smooth Whether the shape should have smoothed sides.
      */
     public static void drawFilledShape(float[] points, RGBA colour, boolean smooth)
     {
         preRender();
+        
+    	glToggle(GL11.GL_LINE_SMOOTH, smooth);
 
-        if (smooth)
-        {
-            GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        }
-        else
-        {
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        }
-
-        // Converts the RGBA value (0-255) to a value relative to 1.0
         GL11.glColor4f(colour.getRed() / 255.0F, colour.getGreen() / 255.0F, colour.getBlue() / 255.0F, colour.getOpacity() / 255.0F);
+        
         GL11.glBegin(GL11.GL_POLYGON);
 
         for (int i = 0; i < points.length; i += 2)
@@ -175,6 +164,7 @@ public class RenderManager
         }
 
         GL11.glEnd();
+        
         postRender();
     }
 
@@ -190,7 +180,7 @@ public class RenderManager
      */
     public static void drawCircle(float x, float y, float radius, float thickness, RGBA colour, boolean smooth)
     {
-        // Draws a partial circle from 0 to 360 degress, making it a full circle
+    	// Draws a full circle
         drawPartialCircle(x, y, radius, 0, 360, thickness, colour, smooth);
     }
 
@@ -229,20 +219,15 @@ public class RenderManager
         {
             endAngle = 360;
         }
-
-        if (smooth)
-        {
-            GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        }
-        else
-        {
-            GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        }
+        
+    	glToggle(GL11.GL_LINE_SMOOTH, smooth);
 
         GL11.glLineWidth(thickness);
-        // Converts the RGBA value (0-255) to a value relative to 1.0
+        
         GL11.glColor4f(colour.getRed() / 255.0F, colour.getGreen() / 255.0F, colour.getBlue() / 255.0F, colour.getOpacity() / 255.0F);
+        
         GL11.glBegin(GL11.GL_LINE_STRIP);
+        
         float ratio = (float)Math.PI / 180.F;
 
         for (int i = startAngle; i <= endAngle; ++i)
@@ -268,6 +253,7 @@ public class RenderManager
     public static void drawString(String text, int x, int y, RGBA colour)
     {
         GL11.glColor4f(colour.getRed() / 255.0F, colour.getGreen() / 255.0F, colour.getBlue() / 255.0F, colour.getOpacity() / 255.0F);
+        
         Minecraft.getMinecraft().fontRenderer.drawString(text, x, y, 0xffffff);
     }
 
@@ -279,5 +265,23 @@ public class RenderManager
     public static int getTextWidth(String text)
     {
         return Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
+    }
+    
+    /**
+     * Toggles an OpenGL property depending on the given flag.
+     * 
+     * @param property The property to toggle.
+     * @param enable Whether or not to enable or disable the property.
+     */
+    private static void glToggle(int property, boolean enable)
+    {
+    	if (enable)
+        {
+            GL11.glEnable(property);
+        }
+        else
+        {
+            GL11.glDisable(property);
+        }
     }
 }
