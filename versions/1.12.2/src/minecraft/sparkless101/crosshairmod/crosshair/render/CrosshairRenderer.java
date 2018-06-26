@@ -2,6 +2,8 @@ package sparkless101.crosshairmod.crosshair.render;
 
 import java.util.HashMap;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -9,6 +11,7 @@ import sparkless101.crosshairmod.crosshair.Crosshair;
 import sparkless101.crosshairmod.crosshair.properties.property.IntegerProperty;
 import sparkless101.crosshairmod.crosshair.style.CrosshairStyle;
 import sparkless101.crosshairmod.crosshair.style.styles.DefaultStyle;
+import sparkless101.crosshairmod.gui.utils.RGBA;
 import sparkless101.crosshairmod.gui.utils.Theme;
 
 /**
@@ -44,42 +47,69 @@ public class CrosshairRenderer
 	 */
 	public void render(int x, int y)
 	{
-		int styleProperty = ((IntegerProperty)this.crosshair.properties.get("crosshair_style")).getValue();
+		int gap = (int)this.crosshair.getProperties().get("crosshair_gap").getValue();
 		
-		// Checks whether the style is valid
-		// Sets the style to 0 by default if invalid
-		int style = this.crosshair.styles.containsKey(styleProperty) ? styleProperty : 0;
+		RGBA colour = (RGBA)this.crosshair.getProperties().get("crosshair_colour").getValue();
 		
-		this.crosshair.styles.get(style).drawCrosshairStyle(x, y, 0, Theme.WHITE);
+		this.preRotation(x, y);
+        
+		this.getStyle().drawCrosshairStyle(x, y, colour);
+        
+		this.postRotation(x, y);
 	}
 	
-	private int calculateRenderGap()
+	/**
+	 * Called before rendering the crosshair, rotates the crosshair.
+	 * 
+	 * @param x X position of the crosshair.
+	 * @param y Y position of the crosshair.
+	 */
+	private void preRotation(int x, int y)
 	{
-		int originalGap = (int)this.crosshair.properties.get("crosshair_gap").getValue();
+		int rotation = (int)this.crosshair.getProperties().get("crosshair_rotation").getValue();
 		
-		boolean spectator = mc.player.isSpectator();
-		boolean holdingItem = mc.player.getHeldItemMainhand() != null;
-		boolean dynamicAttackIndicatorEnabled = (boolean)this.crosshair.properties.get("dynamic_attackindicator_enabled").getValue();
-		boolean dynamicBowEnabled = (boolean)this.crosshair.properties.get("dynamic_bow_enabled").getValue();
+		GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0);
+        GL11.glRotatef(rotation, x, y, 8000);
+        GL11.glTranslatef(-x, -y, 0);
+        
+        if ((int)this.crosshair.getProperties().get("crosshair_style").getValue() != 0)
+        {
+        	GL11.glEnable(GL11.GL_POLYGON_SMOOTH);
+        }
+	}
+	
+	/**
+	 * Called after the crosshair has been rendered. Reverts any changes made from the rotation.
+	 * 
+	 * @param x X position of the crosshair.
+	 * @param y Y position of the crosshair.
+	 */
+	private void postRotation(int x, int y)
+	{
+		GL11.glDisable(GL11.GL_POLYGON_SMOOTH);
 		
-		if (!spectator && holdingItem && (dynamicAttackIndicatorEnabled || dynamicBowEnabled))
+        GL11.glPopMatrix();
+	}
+	
+	/**
+	 * Gets the currently selected style, or the Default crosshair if invalid value.
+	 * 
+	 * @return Crosshair style to be displayed.
+	 */
+	private CrosshairStyle getStyle()
+	{
+		int styleProperty = ((IntegerProperty)this.crosshair.getProperties().get("crosshair_style")).getValue();
+
+		// Checks whether the style is valid
+		// Sets the style to 0 by default if invalid
+		if (this.crosshair.getStyles().containsKey(styleProperty))
 		{
-			ItemStack heldItem = mc.player.getHeldItemMainhand();
-			
-			if (dynamicBowEnabled && heldItem.getItem() == Items.BOW)
-			{
-				int useCount = mc.player.getItemInUseCount();
-				
-				float bowExtension = (heldItem.getItem().getMaxItemUseDuration(heldItem) - useCount) / 20.0F;
-				
-				if (bowExtension == 0 || bowExtension > 1.0F) bowExtension = 1.0F;
-				
-				float gapOffset = (1.0F - bowExtension) * (originalGap * 5) * 2;
-				
-				return originalGap + (int)gapOffset;
-			}
+			return this.crosshair.getStyles().get(styleProperty);
 		}
-		
-		return originalGap;
+		else
+		{
+			return this.crosshair.getStyles().get(0);
+		}
 	}
 }
