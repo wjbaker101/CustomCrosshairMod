@@ -1,6 +1,11 @@
 package sparkless101.crosshairmod.crosshair.style;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.RayTraceResult;
 import sparkless101.crosshairmod.crosshair.Crosshair;
 import sparkless101.crosshairmod.gui.utils.RGBA;
 
@@ -23,6 +28,11 @@ public abstract class CrosshairStyle
 	protected Crosshair crosshair;
 	
 	/**
+	 * Current numbers of ticks the rainbow crosshair has been running for.
+	 */
+	private int rainbowTicks;
+	
+	/**
 	 * Initialises the crosshair style.
 	 * 
 	 * @param mc Minecraft instance.
@@ -32,6 +42,8 @@ public abstract class CrosshairStyle
 		this.mc = mc;
 		
 		this.crosshair = crosshair;
+		
+		this.rainbowTicks = 0;
 	}
 	
 	/**
@@ -43,7 +55,117 @@ public abstract class CrosshairStyle
 	 * @param renderGap Calculated gap at the centre of the crosshair.
 	 * @param renderColour Calculated base colour of the crosshair.
 	 */
-	public abstract void drawCrosshairStyle(int drawX, int drawY, int renderGap, RGBA renderColour);
+	public abstract void drawCrosshairStyle(int drawX, int drawY, RGBA renderColour);
+	
+
+	
+	/**
+	 * Calculates the gap within the crosshair for when it is being rendered.<br>
+	 * Takes into account item swing time and bow pulling animation.
+	 * 
+	 * @return Gap to be used when rendering the crosshair.
+	 */
+	protected int calculateRenderGap()
+	{
+		int originalGap = (int)this.crosshair.getProperties().get("crosshair_gap").getValue();
+		
+		boolean isSpectator = mc.player.isSpectator();
+		boolean isHoldingItem = mc.player.getHeldItemMainhand().getItem() != Items.AIR;
+		boolean dynamicAttackIndicatorEnabled = (boolean)this.crosshair.getProperties().get("dynamic_attackindicator_enabled").getValue();
+		boolean dynamicBowEnabled = (boolean)this.crosshair.getProperties().get("dynamic_bow_enabled").getValue();
+		
+		if (!isSpectator && isHoldingItem && (dynamicAttackIndicatorEnabled || dynamicBowEnabled))
+		{
+			ItemStack heldItem = mc.player.getHeldItemMainhand();
+			
+			if (dynamicBowEnabled && heldItem.getItem() == Items.BOW)
+			{
+				int useCount = mc.player.getItemInUseCount();
+				
+				float bowExtension = (heldItem.getItem().getMaxItemUseDuration(heldItem) - useCount) / 20.0F;
+				
+				if (bowExtension == 0 || bowExtension > 1.0F) bowExtension = 1.0F;
+				
+				float gapOffset = (1.0F - bowExtension) * (originalGap * 5) * 2;
+				
+				return originalGap + (int)gapOffset;
+			}
+			
+			if (dynamicAttackIndicatorEnabled)
+            {
+                float attackCooldown = mc.player.getCooledAttackStrength(mc.getRenderPartialTicks());
+                
+                return originalGap + (int)((1.0F - attackCooldown) * (originalGap + 5) * 2);
+            }
+		}
+		
+		return originalGap;
+	}
+	
+	/**
+	 * Gets the correct colour for the crosshair, depending on the highlighting.
+	 * 
+	 * @return Colour of the crosshair.
+	 */
+	protected RGBA getRenderColour()
+	{
+		if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == RayTraceResult.Type.ENTITY)
+        {
+            if ((mc.objectMouseOver.entityHit instanceof EntityPlayer) && (boolean)this.crosshair.getProperties().get("highlight_player_enabled").getValue())
+            {
+                return (RGBA)this.crosshair.getProperties().get("highlight_passive_colour").getValue();
+            }
+            else if (mc.objectMouseOver.entityHit instanceof EntityMob && (boolean)this.crosshair.getProperties().get("highlight_hostile_enabled").getValue())
+            {
+                return (RGBA)this.crosshair.getProperties().get("highlight_hostile_colour").getValue();
+            }
+            else if ((boolean)this.crosshair.getProperties().get("highlight_passive_enabled").getValue())
+            {
+            	return (RGBA)this.crosshair.getProperties().get("highlight_passive_colour").getValue();
+            }
+        }
+		
+		if ((boolean)this.crosshair.getProperties().get("rainbow_enabled").getValue())
+		{
+			return this.getRainbowColour();
+		}
+		
+		return (RGBA)this.crosshair.getProperties().get("crosshair_colour").getValue();
+	}
+	
+	/**
+	 * Gets the rainbow colour.
+	 * 
+	 * @return Colour of the crosshair.
+	 */
+	private RGBA getRainbowColour()
+	{
+		this.rainbowTicks++;
+		
+		if (this.rainbowTicks >= 10000) this.rainbowTicks = 0;
+		
+		int opacity = ((RGBA)this.crosshair.getProperties().get("crosshair_colour").getValue()).getOpacity();
+		
+		RGBA rainbowColour = (new RGBA(255, 255, 255, opacity))
+								.setRed(this.getRainbowColourComponent(0.0F))
+								.setGreen(this.getRainbowColourComponent(2.0F))
+								.setBlue(this.getRainbowColourComponent(4.0F));
+		
+		return rainbowColour;
+	}
+	
+	/**
+	 * Gets an individual colour component from the given offset.
+	 * 
+	 * @param offset Offset of the colour.
+	 * @return Colour component value.
+	 */
+	private int getRainbowColourComponent(float offset)
+	{
+		int speed = (int)this.crosshair.getProperties().get("rainbow_speed").getValue();
+		
+		return (int)(Math.sin(((speed / 100000.0F) * this.rainbowTicks) + offset) * 127 + 128);
+	}
 	
 	/**
 	 * Checks whether or not the crosshair should be rendered depending on its properties.
@@ -52,9 +174,9 @@ public abstract class CrosshairStyle
 	 */
 	protected boolean shouldRenderCrosshair()
 	{
-		boolean enabled = (boolean)this.crosshair.properties.get("mod_enabled").getValue();
+		boolean enabled = (boolean)this.crosshair.getProperties().get("mod_enabled").getValue();
 		
-		boolean visibleDefault = (boolean)this.crosshair.properties.get("visible_default").getValue();
+		boolean visibleDefault = (boolean)this.crosshair.getProperties().get("visible_default").getValue();
 		
 		boolean visibleDebug = this.visibleDebug();
 		
@@ -75,7 +197,7 @@ public abstract class CrosshairStyle
 	 */
 	private boolean visibleThirdPerson()
 	{
-		boolean propertyValue = (boolean)this.crosshair.properties.get("visible_thirdperson").getValue();
+		boolean propertyValue = (boolean)this.crosshair.getProperties().get("visible_thirdperson").getValue();
 		
 		boolean visibleThirdPerson = !(mc.gameSettings.thirdPersonView > 0) || (mc.gameSettings.thirdPersonView > 0 && propertyValue);
 		
@@ -90,7 +212,7 @@ public abstract class CrosshairStyle
 	 */
 	private boolean visibleDebug()
 	{
-		boolean propertyValue = (boolean)this.crosshair.properties.get("visible_thirdperson").getValue();
+		boolean propertyValue = (boolean)this.crosshair.getProperties().get("visible_thirdperson").getValue();
 		
 		boolean visibleDebug = !(mc.gameSettings.showDebugInfo) || (mc.gameSettings.showDebugInfo && propertyValue);
 		
@@ -105,7 +227,7 @@ public abstract class CrosshairStyle
 	 */
 	private boolean visibleHiddenGUI()
 	{
-		boolean propertyValue = (boolean)this.crosshair.properties.get("visible_hiddengui").getValue();
+		boolean propertyValue = (boolean)this.crosshair.getProperties().get("visible_hiddengui").getValue();
 		
 		boolean visibleHiddenGUI = !mc.gameSettings.hideGUI || (mc.gameSettings.hideGUI && propertyValue);
 		
@@ -120,7 +242,7 @@ public abstract class CrosshairStyle
 	 */
 	private boolean visibleSpectator()
 	{
-		boolean propertyValue = (boolean)this.crosshair.properties.get("visible_spectator").getValue();
+		boolean propertyValue = (boolean)this.crosshair.getProperties().get("visible_spectator").getValue();
 		
 		boolean visibleSpectator = !mc.player.isSpectator() || (mc.player.isSpectator() && propertyValue);
 		
