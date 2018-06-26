@@ -36,9 +36,19 @@ public class Slider extends Component
 	private int grabOffset;
 	
 	/**
+	 * Stores the current background colour to be displayed.
+	 */
+	private RGBA currentThumbBackgroundColour;
+	
+	/**
 	 * Background colour of the thumb.
 	 */
 	private RGBA thumbBackgroundColour;
+
+	/**
+	 * Background colour of the thumb when the mouse is over it.
+	 */
+	private RGBA thumbHoverBackgroundColour;
 	
 	/**
 	 * The current value.
@@ -95,6 +105,10 @@ public class Slider extends Component
 		
 		this.thumbBackgroundColour = Theme.PRIMARY;
 		
+		this.thumbHoverBackgroundColour = Theme.SECONDARY;
+		
+		this.currentThumbBackgroundColour = this.thumbBackgroundColour;
+		
 		this.minValue = minValue;
 		
 		this.maxValue = maxValue;
@@ -113,10 +127,10 @@ public class Slider extends Component
 		RenderManager.drawBorderedRectangle(this.x, this.y + 11 + 3 + (this.thumbSize / 2) - 1, this.x + this.width, this.y + 11 + 3 + (this.thumbSize / 2) + 1, 1.0F, this.currentBorderColour, this.currentBackgroundColour, true);
 		
 		// Draw thumb
-		RenderManager.drawBorderedRectangle(this.x + this.thumbPosition, this.y + 11 + 3, this.x + this.thumbPosition + this.thumbSize, this.y + 11 + 3 + this.thumbSize, 1.0F, Theme.DARK_GREY, this.thumbBackgroundColour, true);
+		RenderManager.drawBorderedRectangle(this.x + this.thumbPosition, this.y + 11 + 3, this.x + this.thumbPosition + this.thumbSize, this.y + 11 + 3 + this.thumbSize, 1.0F, Theme.DARK_GREY, this.currentThumbBackgroundColour, true);
 		
 		// Draw value label
-		RenderManager.drawString(this.getFormattedValue(), this.x + this.width + 5, this.y + 11 + 3 + (this.thumbSize / 2) - 4, this.currentTextColour);
+		RenderManager.drawString(this.getDisplayValue(this.value), this.x + this.width + 5, this.y + 11 + 3 + (this.thumbSize / 2) - 4, this.currentTextColour);
 	}
 	
 	public void onMouseDrag(int startX, int startY, int mouseX, int mouseY, long dragTime)
@@ -170,13 +184,20 @@ public class Slider extends Component
 			// Depending on whether the slider is a float or integer value
 			if (this.valueType == ValueType.FLOAT)
 			{
-				CustomCrosshairMod.INSTANCE.getCrosshair().properties.set(this.boundProperty, new FloatProperty(this.value));
+				CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().set(this.boundProperty, new FloatProperty(this.value));
 			}
 			else
 			{
-				CustomCrosshairMod.INSTANCE.getCrosshair().properties.set(this.boundProperty, new IntegerProperty((int)this.value));
+				CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().set(this.boundProperty, new IntegerProperty(this.valueToInt()));
 			}
 		}
+	}
+	
+	public void setValue(float value)
+	{
+		this.value = value;
+		
+		this.updateThumbPosition();
 	}
 	
 	private void updateThumbPosition()
@@ -189,7 +210,7 @@ public class Slider extends Component
 	{
 		super.bindProperty(property);
 		
-		Property crosshairProperty = CustomCrosshairMod.INSTANCE.getCrosshair().properties.get(this.boundProperty);
+		Property crosshairProperty = CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().get(this.boundProperty);
 		
 		if (crosshairProperty instanceof IntegerProperty)
 		{
@@ -216,6 +237,8 @@ public class Slider extends Component
 	public void onMouseUp(int mouseX, int mouseY)
 	{
 		this.isDragging = false;
+		
+		this.updateThumbPosition();
 	}
 	
 	public void onMouseMove(int mouseX, int mouseY)
@@ -226,14 +249,30 @@ public class Slider extends Component
 		{
 			if (isMouseOverThumb)
 			{
-				this.thumbBackgroundColour = Theme.SECONDARY;
+				this.currentThumbBackgroundColour = this.thumbHoverBackgroundColour;
 			}
 			else
 			{
-				this.thumbBackgroundColour = Theme.PRIMARY;
+				this.currentThumbBackgroundColour = this.thumbBackgroundColour;
 			}
 			
 			this.isMouseOverThumb = isMouseOverThumb;
+		}
+	}
+	
+	public void setThumbColours(RGBA background, RGBA hoverBackground)
+	{
+		this.thumbBackgroundColour = background;
+		
+		this.thumbHoverBackgroundColour = hoverBackground;
+		
+		if (this.isMouseOverThumb)
+		{
+			this.currentThumbBackgroundColour = this.thumbHoverBackgroundColour;
+		}
+		else
+		{
+			this.currentThumbBackgroundColour = this.thumbBackgroundColour;
 		}
 	}
 	
@@ -284,6 +323,21 @@ public class Slider extends Component
 			return String.format("%.2f", this.value); // Formats the value to 2 decimal places
 		}
 		
-		return String.valueOf(Math.round(this.value));
+		return String.valueOf(this.valueToInt());
+	}
+	
+	protected String getDisplayValue(float value)
+	{
+		return this.getFormattedValue();
+	}
+	
+	protected int valueToInt()
+	{
+		return Math.round(this.value);
+	}
+	
+	public int getValue()
+	{
+		return this.valueToInt();
 	}
 }
