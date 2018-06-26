@@ -3,12 +3,14 @@ package sparkless101.crosshairmod.hooks;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
-import sparkless101.crosshairmod.crosshair.properties.Properties;
+import sparkless101.crosshairmod.crosshair.properties.CrosshairProperties;
 import sparkless101.crosshairmod.gui.screens.screen.edit_crosshair.EditCrosshairScreen;
 import sparkless101.crosshairmod.main.CustomCrosshairMod;
 
 public class Hooks
 {
+	private static EditCrosshairScreen editCrosshairScreen = new EditCrosshairScreen();
+	
 	/**
 	 * Allows Minecraft to draw the crosshair.<br>
 	 * 
@@ -31,9 +33,9 @@ public class Hooks
 	 */
 	public static boolean shouldRenderAxes()
 	{
-		boolean enabled = (boolean)CustomCrosshairMod.INSTANCE.getCrosshair().properties.get("mod_enabled").getValue();
+		boolean enabled = (boolean)CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().get("mod_enabled").getValue();
 		
-		boolean visibleDebug = (boolean)CustomCrosshairMod.INSTANCE.getCrosshair().properties.get("visible_debug").getValue();
+		boolean visibleDebug = (boolean)CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().get("visible_debug").getValue();
 		
 		return !enabled || (enabled && visibleDebug);
 	}
@@ -47,17 +49,17 @@ public class Hooks
 	 */
 	public static boolean shouldRenderDefaultCrosshair()
 	{
-		boolean enabled = (boolean)CustomCrosshairMod.INSTANCE.getCrosshair().properties.get("mod_enabled").getValue();
+		boolean enabled = (boolean)CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().get("mod_enabled").getValue();
 		
 		return !enabled;
 	}
 	
 	public static void openEditCrosshairScreen(Minecraft mc)
 	{
-		String keybind = (String)CustomCrosshairMod.INSTANCE.getCrosshair().properties.get("keybind_screen_editcrosshair").getValue();
+		String keybind = (String)CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().get("keybind_screen_editcrosshair").getValue();
 		
 		if (mc.currentScreen != null || !Keyboard.isKeyDown(Keyboard.getKeyIndex(keybind))) return;
 		
-		mc.displayGuiScreen(new EditCrosshairScreen());
+		mc.displayGuiScreen(editCrosshairScreen);
 	}
 }
