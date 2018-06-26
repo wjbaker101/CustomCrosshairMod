@@ -1,6 +1,6 @@
 package sparkless101.crosshairmod.gui.screens.screen.edit_crosshair;
 
-import sparkless101.crosshairmod.crosshair.properties.config.Config;
+import sparkless101.crosshairmod.crosshair.config.Config;
 import sparkless101.crosshairmod.gui.components.Panel;
 import sparkless101.crosshairmod.gui.components.ScrollPanel;
 import sparkless101.crosshairmod.gui.components.Slider;
