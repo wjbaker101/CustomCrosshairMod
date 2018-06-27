@@ -54,11 +54,11 @@ public class EditorPanel extends Panel
 			@Override
 			public void onMouseUp(int mouseX, int mouseY)
 			{
+				super.onMouseUp(mouseX, mouseY);
+				
 				RGBA newColour = new RGBA(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue(), opacitySlider.getValue());
 				
 				CustomCrosshairMod.INSTANCE.getCrosshair().getProperties().set(propertyName, new RGBAProperty(newColour));
-				
-				System.out.println(parentScreen);
 				
 				Minecraft.getMinecraft().displayGuiScreen(parentScreen.getParentScreen());
 			}
