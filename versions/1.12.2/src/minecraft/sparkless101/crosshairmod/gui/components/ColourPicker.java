@@ -34,6 +34,9 @@ public class ColourPicker extends Component
 	
 	public void onMouseUp(int mouseX, int mouseY)
 	{
-		Minecraft.getMinecraft().displayGuiScreen(new EditColourScreen(this.boundProperty));
+		EditColourScreen editColourScreen = new EditColourScreen(this.boundProperty);
+		editColourScreen.setParentScreen(this.getParentScreen());
+		
+		Minecraft.getMinecraft().displayGuiScreen(editColourScreen);
 	}
 }
