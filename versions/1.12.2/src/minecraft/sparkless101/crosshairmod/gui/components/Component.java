@@ -83,6 +83,8 @@ public abstract class Component extends ComponentStyle implements IComponentMous
 		this.components = new ArrayList<Component>();
 		
 		this.bounds = new Bounds(this.y, this.x + this.width, this.y + this.height, this.x);
+		
+		this.parentScreen = parentScreen;
 	}
 	
 	/**
