@@ -13,6 +13,7 @@ import sparkless101.crosshairmod.crosshair.style.CrosshairStyle;
 import sparkless101.crosshairmod.crosshair.style.styles.CircleStyle;
 import sparkless101.crosshairmod.crosshair.style.styles.CrossStyle;
 import sparkless101.crosshairmod.crosshair.style.styles.DefaultStyle;
+import sparkless101.crosshairmod.crosshair.style.styles.SquareStyle;
 import sparkless101.crosshairmod.gui.utils.Theme;
 
 /**
@@ -79,6 +80,7 @@ public class Crosshair
 		this.styles.put(0, new DefaultStyle(this.mc, this));
 		this.styles.put(1, new CrossStyle(this.mc, this));
 		this.styles.put(2, new CircleStyle(this.mc, this));
+		this.styles.put(3, new SquareStyle(this.mc, this));
 	}
 	
 	/**

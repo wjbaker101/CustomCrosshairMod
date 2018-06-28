@@ -43,6 +43,8 @@ public class ShapeSettingsPanel extends Panel
 				
 				if (intValue == 2) return "Circle";
 				
+				if (intValue == 3) return "Square";
+				
 				return "Invalid (Defaults to Default Crosshair)";
 			}
 		};
