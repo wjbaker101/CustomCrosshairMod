@@ -5,6 +5,7 @@ import sparkless101.crosshairmod.gui.components.Heading;
 import sparkless101.crosshairmod.gui.components.Panel;
 import sparkless101.crosshairmod.gui.components.Slider;
 import sparkless101.crosshairmod.gui.screens.Screen;
+import sparkless101.crosshairmod.main.CustomCrosshairMod;
 
 public class ShapeSettingsPanel extends Panel
 {
@@ -30,7 +31,8 @@ public class ShapeSettingsPanel extends Panel
 		
 		this.titleHeading = new Heading(parentScreen, "Crosshair Shape Settings", 0, 0);
 		
-		this.crosshairStyleSlider = new Slider(parentScreen, "Crosshair Style", 0, 0, 75, 0, 2)
+		int maxValue = CustomCrosshairMod.INSTANCE.getCrosshair().getStyles().size();
+		this.crosshairStyleSlider = new Slider(parentScreen, "Crosshair Style", 0, 0, 75, 0, maxValue - 1)
 		{
 			@Override
 			protected String getDisplayValue(float value)
